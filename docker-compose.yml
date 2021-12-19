@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  #Elixir Service
+  phoenix:
+    build: .
+    container_name: inventory-app
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./src:/app
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+
+  #Postgres Service
+  db:
+    image: postgres:14.1
+    container_name: inventory-db
+    restart: unless-stopped
+    tty: true
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
